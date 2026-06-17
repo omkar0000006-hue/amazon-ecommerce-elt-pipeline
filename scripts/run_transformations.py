@@ -4,9 +4,7 @@ import matplotlib.pyplot as plt
 import logging
 import os
 
-# =====================================
-# LOGGING
-# =====================================
+
 
 logging.basicConfig(
     filename="etl.log",
@@ -16,17 +14,13 @@ logging.basicConfig(
 
 logging.info("Pipeline Started")
 
-# =====================================
-# CONNECT DATABASE
-# =====================================
+
 
 conn = duckdb.connect(
     "output/ecommerce.db"
 )
 
-# =====================================
-# RUN SQL TRANSFORMATIONS
-# =====================================
+
 
 with open(
     "sql/transformations.sql",
@@ -41,9 +35,7 @@ print("Transformations Complete")
 
 logging.info("Transformations Complete")
 
-# =====================================
-# KPI REPORT
-# =====================================
+
 
 kpi_report = conn.execute("""
 SELECT
@@ -62,9 +54,7 @@ kpi_report.to_csv(
 print("\nKPI Report")
 print(kpi_report)
 
-# =====================================
-# SALES REPORT
-# =====================================
+
 
 sales_report = conn.execute("""
 SELECT
@@ -77,9 +67,6 @@ sales_report.to_csv(
     index=False
 )
 
-# =====================================
-# TOP CUSTOMERS
-# =====================================
 
 top_customers = conn.execute("""
 SELECT
@@ -100,10 +87,7 @@ top_customers.to_csv(
 print("\nTop Customers")
 print(top_customers)
 
-# =====================================
-# CUSTOMER RANKING
-# WINDOW FUNCTION
-# =====================================
+
 
 customer_rank = conn.execute("""
 SELECT
@@ -130,9 +114,7 @@ customer_rank.to_csv(
     index=False
 )
 
-# =====================================
-# TOP PRODUCTS
-# =====================================
+
 
 top_products = conn.execute("""
 SELECT
@@ -153,9 +135,7 @@ top_products.to_csv(
 print("\nTop Products")
 print(top_products)
 
-# =====================================
-# REVENUE BY CATEGORY
-# =====================================
+
 
 category_report = conn.execute("""
 SELECT
@@ -173,9 +153,7 @@ category_report.to_csv(
     index=False
 )
 
-# =====================================
-# REVENUE BY CITY
-# =====================================
+
 
 city_report = conn.execute("""
 SELECT
@@ -193,9 +171,7 @@ city_report.to_csv(
     index=False
 )
 
-# =====================================
-# DAILY SALES TREND
-# =====================================
+
 
 daily_sales = conn.execute("""
 SELECT
@@ -211,10 +187,6 @@ daily_sales.to_csv(
     index=False
 )
 
-# =====================================
-# CHART 1
-# TOP CUSTOMERS
-# =====================================
 
 plt.figure(figsize=(8,5))
 
@@ -235,10 +207,6 @@ plt.savefig(
 
 plt.close()
 
-# =====================================
-# CHART 2
-# TOP PRODUCTS
-# =====================================
 
 plt.figure(figsize=(8,5))
 
@@ -259,10 +227,6 @@ plt.savefig(
 
 plt.close()
 
-# =====================================
-# CHART 3
-# DAILY SALES
-# =====================================
 
 plt.figure(figsize=(8,5))
 
@@ -286,10 +250,6 @@ plt.savefig(
 plt.close()
 
 logging.info("Reports Generated")
-
-# =====================================
-# CLOSE
-# =====================================
 
 conn.close()
 
